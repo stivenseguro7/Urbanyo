@@ -5,13 +5,14 @@ using Urbanyo.Shared.Entities;
 
 namespace Urbanyo.API.Controllers
 {
+
     [ApiController]
-    [Route("/api/countries")]
-    public class CountriesController : ControllerBase
+    [Route("/api/states")]
+    public class StatesController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public CountriesController(DataContext context)
+        public StatesController(DataContext context)
         {
             _context = context;
         }
@@ -19,17 +20,8 @@ namespace Urbanyo.API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAsync()
         {
-            return Ok(await _context.Countries
-                .Include(x => x.States)
-                .ToListAsync());
-        }
-
-        [HttpGet("full")]
-        public async Task<ActionResult> GetFullAsync()
-        {
-            return Ok(await _context.Countries
-                .Include(x => x.States!)
-                .ThenInclude(x => x.Cities)
+            return Ok(await _context.States
+                .Include(x => x.Cities)
                 .ToListAsync());
         }
 
@@ -37,34 +29,33 @@ namespace Urbanyo.API.Controllers
 
         public async Task<ActionResult> GetAsync(int id)
         {
-            var country = await _context.Countries
-                .Include (x => x.States!)
-                .ThenInclude (x => x.Cities)
+            var state = await _context.States
+                .Include(x => x.Cities)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            if (country == null)
+            if (state == null)
             {
                 return NotFound();
             }
 
-            return Ok(country);
+            return Ok(state);
         }
 
 
         [HttpPost]
-        public async Task<ActionResult> PostAsync(Country country)
+        public async Task<ActionResult> PostAsync(State state)
         {
-            
+
             try
             {
-                _context.Add(country);
+                _context.Add(state);
                 await _context.SaveChangesAsync();
-                return Ok(country);
+                return Ok(state);
             }
             catch (DbUpdateException dbUpdateException)
             {
                 if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
                 {
-                    return BadRequest("Ya existe un país con el mismo nombre.");
+                    return BadRequest("Ya existe un Estado/Departamento con el mismo nombre.");
                 }
                 else
                 {
@@ -79,22 +70,22 @@ namespace Urbanyo.API.Controllers
 
 
         [HttpPut]
-        public async Task<ActionResult> PutAsync(Country country)
+        public async Task<ActionResult> PutAsync(State state)
         {
             try
             {
-                _context.Update(country);
-                 await _context.SaveChangesAsync();
-                return Ok(country);
+                _context.Update(state);
+                await _context.SaveChangesAsync();
+                return Ok(state);
             }
             catch (DbUpdateException dbUpdateException)
             {
                 if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
                 {
-                    return BadRequest("Ya existe un registro con el mismo nombre.");
+                    return BadRequest("Ya existe un Estado/Departamento con el mismo nombre.");
                 }
-                
-                    return BadRequest(dbUpdateException.InnerException.Message);
+
+                return BadRequest(dbUpdateException.InnerException.Message);
             }
             catch (Exception exception)
             {
@@ -106,12 +97,12 @@ namespace Urbanyo.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-           var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
-            if (country == null)
+            var state = await _context.States.FirstOrDefaultAsync(x => x.Id == id);
+            if (state == null)
             {
                 return NotFound();
             }
-            _context.Remove(country);
+            _context.Remove(state);
             await _context.SaveChangesAsync();
             return NoContent();
         }

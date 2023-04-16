@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Urbanyo.Shared\Urbanyo.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Cities\" />
+  </ItemGroup>
+
 </Project>

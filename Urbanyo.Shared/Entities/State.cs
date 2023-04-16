@@ -17,6 +17,6 @@ namespace Urbanyo.Shared.Entities
 
         public ICollection<City>? Cities { get; set;}
 
-        public int citiesNumber => Cities == null ? 0 : Cities.Count;
+        public int CitiesNumber => Cities == null ? 0 : Cities.Count;
     }
 }
