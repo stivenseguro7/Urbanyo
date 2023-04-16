@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Sales.API.Services;
 using System.Text.Json.Serialization;
 using Urbanyo.API.Data;
 
@@ -10,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DockerConnection"));
 builder.Services.AddTransient<SeedDb>();
+builder.Services.AddScoped<IApiService, ApiService>();
 
 var app = builder.Build();
 SeedDb(app);
