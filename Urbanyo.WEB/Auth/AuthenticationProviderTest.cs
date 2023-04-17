@@ -16,7 +16,7 @@ namespace Urbanyo.WEB.Auth
                       new Claim(ClaimTypes.Role, "Admin")
                 },
             authenticationType: "test");
-            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(anonimous)));
+            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(EstivenUser)));
             //anonumous decrementa el contador y zuluUser lo aumenta y permite ver los paises
         }
     }

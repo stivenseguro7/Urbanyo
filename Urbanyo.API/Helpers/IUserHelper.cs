@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Urbanyo.Shared.DTOs;
 using Urbanyo.Shared.Entities;
 
 namespace Urbanyo.API.Helpers
@@ -14,6 +15,11 @@ namespace Urbanyo.API.Helpers
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginDTO model);
+
+        Task LogoutAsync();
+
     }
 }
 

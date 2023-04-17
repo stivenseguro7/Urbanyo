@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Urbanyo.API.Data;
 using Urbanyo.API.Helpers;
@@ -9,7 +11,9 @@ namespace Urbanyo.API.Controllers
 {
 
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/states")]
+
     public class StatesController : ControllerBase
     {
         private readonly DataContext _context;

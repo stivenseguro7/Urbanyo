@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Urbanyo.API.Data;
 using Urbanyo.API.Helpers;
@@ -8,6 +10,7 @@ using Urbanyo.Shared.Entities;
 namespace Sales.API.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/cities")]
     public class CitiesController : ControllerBase
     {

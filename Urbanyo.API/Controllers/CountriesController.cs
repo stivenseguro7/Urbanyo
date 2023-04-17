@@ -4,10 +4,13 @@ using Urbanyo.API.Helpers;
 using Urbanyo.Shared.DTOs;
 using Urbanyo.API.Data;
 using Urbanyo.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Urbanyo.API.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/countries")]
     public class CountriesController : ControllerBase
     {
