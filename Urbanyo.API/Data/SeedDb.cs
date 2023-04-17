@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sales.API.Services;
 using Sales.shared.Responses;
+using Urbanyo.API.Helpers;
 using Urbanyo.Shared.Entities;
+using Urbanyo.Shared.Enums;
 
 namespace Urbanyo.API.Data
 {
@@ -9,17 +11,58 @@ namespace Urbanyo.API.Data
     {
         private readonly DataContext _context;
         private readonly IApiService _apiService;
+        private readonly IUserHelper _userHelper;
 
-        public SeedDb(DataContext context, IApiService apiService)
+        public SeedDb(DataContext context, IApiService apiService, IUserHelper userHelper)
         {
             _context = context;
             _apiService = apiService;
+            _userHelper = userHelper;
         }
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
             await CheckCountriesAsync();
+            await CheckRolesAsync();
+            await CheckUserAsync("1010", "Estiven", "Seguro", "stiven@yopmail.com", "314 527 1504", "Calle manrique", UserType.Admin);
+            await CheckUserAsync("2020", "Sebastian", "Castrillon", "sebas@yopmail.com", "314 613 3249", "Calle Luna", UserType.Admin);
+            await CheckUserAsync("3030", "Mateo", "Herrera", "mateo@yopmail.com", "312 234 8084", "Calle Sol", UserType.Admin);
+
         }
+
+        private async Task CheckRolesAsync()
+        {
+            await _userHelper.CheckRoleAsync(UserType.Admin.ToString());
+            await _userHelper.CheckRoleAsync(UserType.AssociatedUser.ToString());
+            await _userHelper.CheckRoleAsync(UserType.User.ToString());
+        }
+
+        private async Task<User> CheckUserAsync(string document, string firstName, string lastName, string email, string phone, string address, UserType userType)
+        {
+            var user = await _userHelper.GetUserAsync(email);
+            if (user == null)
+            {
+                user = new User
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email,
+                    UserName = email,
+                    PhoneNumber = phone,
+                    Address = address,
+                    Document = document,
+                    City = _context.Cities.FirstOrDefault(),
+                    UserType = userType,
+                };
+
+                await _userHelper.AddUserAsync(user, "123456");
+                await _userHelper.AddUserToRoleAsync(user, userType.ToString());
+            }
+
+            return user;
+        }
+
+
         private async Task CheckCountriesAsync()
         {
             if (!_context.Countries.Any())
