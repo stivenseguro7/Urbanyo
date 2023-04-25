@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Urbanyo.Shared.Entities
 {
-    internal class Question
+    public class Question
     {
         public string Text { get; set; }
         public List<string> Choices { get; set; }

@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using Urbanyo.Shared.Entities
+@using Blazorise
 
 
 <PageTitle>Index</PageTitle>
@@ -12,6 +14,8 @@
     </NotAuthorized>
 </AuthorizeView>
 
+
+
 <div class="text-center mt-4">
 
     <h1><img src="https://images.adsttc.com/media/images/5b8d/e80e/f197/cc85/dc00/0113/original/GIF-01-.gif?1536026632" width="30" height="30" alt="Construcción"> Urbanyo</h1>
@@ -21,14 +25,55 @@
 </div>
 
 
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="max-width: 600px;">
+            <div class="carousel-inner">
+                @foreach (var imagen in imagenes)
+                {
+                    <div class="carousel-item @(imagen == imagenes[0] ? "active" : "")">
+                        <img src="@imagen.Url" class="d-block w-100" alt="...">
+                    </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+@code {
+    private List<Imagen> imagenes = new List<Imagen>
+    {
+        new Imagen { Url = "https://infraestructurayvivienda.com/wp-content/uploads/2020/10/Proyectos-innovadores-de-construccion-800x400.jpg", Titulo = "Imagen 1" },
+        new Imagen { Url = "https://i0.wp.com/grupocasalima.com/wp-content/uploads/2022/04/construir-una-casa-2022-en-peru.webp?resize=800%2C400&ssl=1", Titulo = "Imagen 2" },
+        new Imagen { Url = "https://st3.idealista.com/news/archivos/styles/fullwidth_xl/public/2013-10/Villa-LEscalet-02-800x400.jpg?VersionId=meApowfOKrJMJVzS_A8Qn93tGHvcfYpl&itok=vdLjRSe-", Titulo = "Imagen 3" }
+    };
+}
+
+
+
+
+
 
 
 
 
 <div class="text-center mt-4">
+    <a href="questions">
     <button class="btn btn-secondary">
         <img src="Image\casa-silueta-negra-sin-puerta.png" width="30" height="30" alt="Construcción"> Construcción
     </button>
+    </a>
     <br />
     <br />
     <button class="btn btn-secondary">
@@ -41,9 +86,15 @@
     </button>
     <br />
     <br />
-    <button class="btn btn-danger" href="Login">
-        Ingresar
-    </button>
+    
+
+    <a href="Login">
+        <button class="btn btn-danger" >
+            Ingresar
+        </button>
+    </a>
+    <br />
+    <a href="Register" class="nav-link btn btn-link">Registro</a>
 </div>
 
 
