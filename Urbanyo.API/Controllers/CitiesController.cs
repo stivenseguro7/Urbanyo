@@ -7,7 +7,7 @@ using Urbanyo.API.Helpers;
 using Urbanyo.Shared.DTOs;
 using Urbanyo.Shared.Entities;
 
-namespace Sales.API.Controllers
+namespace Urbanyo.API.Controllers
 {
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

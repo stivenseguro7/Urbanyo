@@ -47,8 +47,8 @@ namespace Urbanyo.API.Controllers
             }, HttpContext.Request.Scheme, _configuration["UrlWEB"]);
 
             var response = _mailHelper.SendMail(user.FullName, user.Email!,
-                $"Sales - Recuperación de contraseña",
-                $"<h1>Sales - Recuperación de contraseña</h1>" +
+                $"Urbanyo - Recuperación de contraseña",
+                $"<h1>Urbanyo - Recuperación de contraseña</h1>" +
                 $"<p>Para recuperar su contraseña, por favor hacer clic 'Recuperar Contraseña':</p>" +
                 $"<b><a href ={tokenLink}>Recuperar Contraseña</a></b>");
 
@@ -173,8 +173,8 @@ namespace Urbanyo.API.Controllers
                 }, HttpContext.Request.Scheme, _configuration["UrlWEB"]);
 
                 var response = _mailHelper.SendMail(user.FullName, user.Email!,
-                    $"Saless- Confirmación de cuenta",
-                    $"<h1>Sales - Confirmación de cuenta</h1>" +
+                    $"Urbanyo- Confirmación de cuenta",
+                    $"<h1>Urbanyo - Confirmación de cuenta</h1>" +
                     $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
                     $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
 
@@ -206,8 +206,8 @@ namespace Urbanyo.API.Controllers
             }, HttpContext.Request.Scheme, _configuration["UrlWEB"]);
 
             var response = _mailHelper.SendMail(user.FullName, user.Email!,
-                $"Saless- Confirmación de cuenta",
-                $"<h1>Sales - Confirmación de cuenta</h1>" +
+                $"Urbanyo- Confirmación de cuenta",
+                $"<h1>Urbanyo - Confirmación de cuenta</h1>" +
                 $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
                 $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
 

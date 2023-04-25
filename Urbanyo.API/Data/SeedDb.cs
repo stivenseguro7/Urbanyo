@@ -29,6 +29,17 @@ namespace Urbanyo.API.Data
             await CheckUserAsync("3030", "Mateo", "Herrera", "mateo@yopmail.com", "312 234 8084", "Calle Sol", UserType.Admin);
 
         }
+        private async Task ProjectTypesAsync()
+        {
+            if (!_context.ProjectTypes.Any())
+            {
+                _context.ProjectTypes.Add(new ProjectType { name = "Construcción" });
+                _context.ProjectTypes.Add(new ProjectType { name = "Legalización" });
+                _context.ProjectTypes.Add(new ProjectType { name = "Remodelación" });
+              
+                await _context.SaveChangesAsync();
+            }
+        }
 
         private async Task CheckRolesAsync()
         {
