@@ -1,0 +1,253 @@
+﻿@page "/questions"
+@inject IJSRuntime JSRuntime
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+
+
+<h3>QuestionsIndex</h3>
+
+
+
+
+
+<PageTitle>Index</PageTitle>
+
+
+@if (_questionIndex < _questions.Count)
+{
+    <h2>@_questions[_questionIndex].Text</h2>
+
+
+
+    @if (_questions[_questionIndex].Amount != null)
+    {
+
+        @foreach (var choice in _questions[_questionIndex].Choices)
+        {
+            <p>
+                <button class="btn btn-primary custom-btn @(_selectedAnswer == choice ? "inactive" : "")" @onclick="() => OnAnswerSelected(choice)">@choice</button>
+            </p>
+            <select class="form-control" @onchange="e => OnAnswerSelected(e.Value.ToString())">
+                <option value="">--Seleccione--</option>
+                @foreach (var choice1 in _questions[_questionIndex].Amount)
+                {
+                    <option value="@choice1">@choice1</option>
+
+                }
+            </select>
+
+        }
+
+    }
+    else
+    {
+        @if (_questions[_questionIndex].Archivos != null)
+        {
+            <div style="height: 800px;">
+                <textarea style="height: 50%;"></textarea>
+            </div>
+
+            <input type="file" />
+
+        }
+        else
+        {
+            @foreach (var choice in _questions[_questionIndex].Choices)
+            {
+                <p>
+                    <button class="btn btn-primary custom-btn @(_selectedAnswer == choice ? "active" : "")" @onclick="() => OnAnswerSelected(choice)">@choice</button>
+                </p>
+            }
+        }
+
+
+    }
+
+
+    <br>
+
+    <div class="d-flex justify-content-between">
+        @if (_questionIndex > 0)
+        {
+            <button class="btn btn-primary custom-btn circular-button" @onclick="PreviousQuestion">Previous</button>
+        }
+
+        @if (_questionIndex < _questions.Count - 1)
+        {
+            <button class="btn btn-primary custom-btn circular-button" @onclick="NextQuestion">Next</button>
+
+        }
+        else
+        {
+            <button class="btn btn-primary custom-btn" @onclick="Submit">Submit</button>
+        }
+    </div>
+
+    <hr />
+
+    <div class="progress">
+        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: @_progressWidth%" aria-valuenow="@_progressWidth" aria-valuemin="0" aria-valuemax="100">@(_questionIndex + 1)/@_questions.Count</div>
+    </div>
+
+    <a href="#" @onclick="_showMessage">Recibir una asesoría</a>
+
+
+}
+
+
+
+
+
+
+
+@code {
+
+    private List<Question> _questions = new List<>
+    {
+
+
+
+        new Question
+        {
+            Text = "Desea construir sobre un lote de tu propiedad o sobre el que estas autorizado a intervenir?",
+            Choices = new List<string> { "Si", "No", "Esta en proceso de compra" }          
+        },
+        new Question
+        {
+            Text = "En que tipo de lote se va a presentar la construccion?",
+            Choices = new List<string> { "Lote entre medianeras sin construccion", "Losa sobre construccion existente", "Lote libre de medianeras" }
+            
+        },
+        new Question
+        {
+            Text = "Que area aproximada tienes pensado contruir?",
+            Choices = new List<string> { "Entre 40 y 50 M2 ", "Entre 51 y 70 M2 ", "Entre 71 y 100 M2 ", "Mas de 100 M2 " }
+        },
+        new Question
+        {
+            Text = "Cuantas personas estimas que viviran en la casa que quieres construir?",
+            Choices = new List<string> { "Adultos (Entre 18 y 60 años)", "Ninos (Menores a 13 años)", "Adultos mayores (Mayores 60 años)", "Adolecentes (Entre 13 y 18 años)" },
+            Amount = new List<int> { 1, 2, 3, 4, 5, 6  }
+        },
+        new Question
+        {
+            Text = "Tienes planteado algun presupuesto?",
+            Choices = new List<string> { "Si", "No", "Esta en proceso de compra" }
+
+        },
+        new Question
+        {
+            Text = "Cuantas plantas o pisos tienes planteado construir?",
+            Choices = new List<string> { "1", "2", "3 o mas", "No lo tengo definido" }
+        },
+        new Question
+        {
+            Text = "Que espacios tienes contemplados que conformaran la vivienda?",
+            Choices = new List<string> { "Habitaciones", "Baños", "Salas o salones", "Parqueaderos" },
+            Amount = new List<int> { 1, 2, 3, 4, 5, 6  }
+        },
+        new Question
+        {
+            Text = "Hay algun espacio especial que qusieras en la vivienda del que nos quieras contar?",
+            Archivos = new List<string> { },
+            Text1 = ""
+        }
+    };
+
+    private int _questionIndex = 0;
+    private string _selectedAnswer = "";
+    private int _numCorrectAnswers = 0;
+    private double _progressWidth = 0;
+
+    private void OnAnswerSelected(string choice)
+    {
+        _selectedAnswer = choice;
+    }
+
+    private void NextQuestion()
+    {
+        if (_selectedAnswer == "")
+        {
+            return;
+        }
+
+        if (_selectedAnswer == _questions[_questionIndex].Choices[_questions[_questionIndex].Answer])
+        {
+            _numCorrectAnswers++;
+        }
+
+        _questionIndex++;
+        _selectedAnswer = "";
+        _progressWidth = ((_questionIndex + 1.0) / _questions.Count) * 100;
+    }
+
+    private void PreviousQuestion()
+    {
+        _questionIndex--;
+        _selectedAnswer = "";
+        _progressWidth = ((_questionIndex + 1.0) / _questions.Count) * 100;
+    }
+
+    private void Submit()
+    {
+        if (_selectedAnswer == "")
+        {
+            return;
+        }
+
+        if (_selectedAnswer == _questions[_questionIndex].Choices[_questions[_questionIndex].Answer])
+        {
+            _numCorrectAnswers++;
+        }
+
+        _selectedAnswer = "";
+
+        _progressWidth = ((_questionIndex + 1.0) / _questions.Count) * 100;
+
+        _questionIndex = _questions.Count;
+    }
+
+    private void Restart()
+    {
+        _questionIndex = 0;
+        _selectedAnswer = "";
+        _numCorrectAnswers = 0;
+        _progressWidth = 0;
+    }
+
+    private void ShowMessage()
+    {
+        // Aquí puedes mostrar un mensaje de confirmación o utilizar alguna librería de notificaciones para mostrar un mensaje de forma más estilizada
+        Console.WriteLine("Pronto un asesor se comunicará contigo");
+    }
+
+
+    private async Task _showMessage()
+    {
+        await JSRuntime.InvokeAsync<object>("alert", "Próximamente un asesor se comunicará contigo");
+
+    }
+
+
+
+    public List<string> archivos = new List<string>();
+
+    private void CargarArchivo(InputFileChangeEventArgs e)
+    {
+        var archivo = e.File;
+
+        //Aquí puede agregar la lógica para procesar el archivo
+        archivos.Add(archivo.Name);
+    }
+
+    void Enviar()
+    {
+        //Aquí puede agregar la lógica para enviar el texto y los archivos
+    }
+
+
+
+}
+
