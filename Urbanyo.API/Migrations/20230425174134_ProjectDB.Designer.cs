@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Urbanyo.API.Data;
 
@@ -11,9 +12,11 @@ using Urbanyo.API.Data;
 namespace Urbanyo.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230425174134_ProjectDB")]
+    partial class ProjectDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,12 +258,6 @@ namespace Urbanyo.API.Migrations
                     b.Property<int?>("QuestionConstructionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("QuestionLegalizationId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("QuestionReshuffleId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("StateProjectId")
                         .HasColumnType("int");
 
@@ -275,13 +272,9 @@ namespace Urbanyo.API.Migrations
 
                     b.HasIndex("QuestionConstructionId");
 
-                    b.HasIndex("QuestionLegalizationId");
-
-                    b.HasIndex("QuestionReshuffleId");
-
                     b.HasIndex("StateProjectId");
 
-                    b.ToTable("ProjectTypes");
+                    b.ToTable("projectTypes");
                 });
 
             modelBuilder.Entity("Urbanyo.Shared.Entities.QuestionConstruction", b =>
@@ -327,57 +320,7 @@ namespace Urbanyo.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectTypeId")
-                        .IsUnique();
-
-                    b.ToTable("QuestionConstructions");
-                });
-
-            modelBuilder.Entity("Urbanyo.Shared.Entities.QuestionLegalization", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProjectTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectTypeId")
-                        .IsUnique();
-
-                    b.ToTable("QuestionLegalizations");
-                });
-
-            modelBuilder.Entity("Urbanyo.Shared.Entities.QuestionReshuffle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ParcialReshuffle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProjectTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Question1")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectTypeId")
-                        .IsUnique();
-
-                    b.ToTable("QuestionReshuffles");
+                    b.ToTable("questionConstructions");
                 });
 
             modelBuilder.Entity("Urbanyo.Shared.Entities.State", b =>
@@ -436,7 +379,7 @@ namespace Urbanyo.API.Migrations
                     b.HasIndex("ProjectTypeId")
                         .IsUnique();
 
-                    b.ToTable("StateProjects");
+                    b.ToTable("stateProjects");
                 });
 
             modelBuilder.Entity("Urbanyo.Shared.Entities.User", b =>
@@ -510,6 +453,9 @@ namespace Urbanyo.API.Migrations
                     b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("QuestionConstructionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -536,6 +482,8 @@ namespace Urbanyo.API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("QuestionConstructionId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -616,14 +564,6 @@ namespace Urbanyo.API.Migrations
                         .WithMany("ProjectTypes")
                         .HasForeignKey("QuestionConstructionId");
 
-                    b.HasOne("Urbanyo.Shared.Entities.QuestionLegalization", null)
-                        .WithMany("ProjectTypes")
-                        .HasForeignKey("QuestionLegalizationId");
-
-                    b.HasOne("Urbanyo.Shared.Entities.QuestionReshuffle", null)
-                        .WithMany("ProjectTypes")
-                        .HasForeignKey("QuestionReshuffleId");
-
                     b.HasOne("Urbanyo.Shared.Entities.StateProject", null)
                         .WithMany("ProjectTypes")
                         .HasForeignKey("StateProjectId");
@@ -656,6 +596,10 @@ namespace Urbanyo.API.Migrations
                         .WithMany("Users")
                         .HasForeignKey("ProjectId");
 
+                    b.HasOne("Urbanyo.Shared.Entities.QuestionConstruction", null)
+                        .WithMany("Users")
+                        .HasForeignKey("QuestionConstructionId");
+
                     b.Navigation("City");
                 });
 
@@ -683,16 +627,8 @@ namespace Urbanyo.API.Migrations
             modelBuilder.Entity("Urbanyo.Shared.Entities.QuestionConstruction", b =>
                 {
                     b.Navigation("ProjectTypes");
-                });
 
-            modelBuilder.Entity("Urbanyo.Shared.Entities.QuestionLegalization", b =>
-                {
-                    b.Navigation("ProjectTypes");
-                });
-
-            modelBuilder.Entity("Urbanyo.Shared.Entities.QuestionReshuffle", b =>
-                {
-                    b.Navigation("ProjectTypes");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Urbanyo.Shared.Entities.State", b =>
