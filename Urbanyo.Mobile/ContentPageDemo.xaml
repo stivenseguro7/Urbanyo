@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Urbanyo.Mobile.ContentPageDemo"
+             Title="ContentPageDemo"
+             BackgroundColor="LightSalmon">
+    <VerticalStackLayout
+        VerticalOptions="Center" 
+        HorizontalOptions="Center"
+        Spacing="5">
+
+        <Label 
+            Text="Construye tu sueno a tu gusto"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Label 
+            Text="Que quieres hacer"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"/>
+
+        <Button
+            Text="Construir"
+            BackgroundColor="LightGray"
+            Opacity="0.7"
+            BorderColor="Transparent"
+            BorderWidth="0"
+            TextColor="White" />
+        <Button
+            Text="Remodelar"
+            Clicked="Button_Construir"
+            BackgroundColor="LightGray"
+            Opacity="0.7"
+            BorderColor="Transparent"
+            BorderWidth="0"
+            TextColor="White" />
+        <Button
+            Text="Legalizar"
+            BackgroundColor="LightGray"
+            Opacity="0.7"
+            BorderColor="Transparent"
+            BorderWidth="0"
+            TextColor="White" />
+        <Button
+            Text="Ingresar"
+            BackgroundColor="Salmon"/>
+
+        <Label
+            Text="Registro"
+            />
+        <Label
+            Text="Asociado"/>
+
+    </VerticalStackLayout>
+</ContentPage>
